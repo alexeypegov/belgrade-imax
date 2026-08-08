@@ -7669,16 +7669,6 @@ var $author$project$Main$filterImax = function (sessions) {
 	};
 	return A2($elm$core$List$filter, isImax, sessions);
 };
-var $elm$core$Set$Set_elm_builtin = $elm$core$Basics$identity;
-var $elm$core$Set$empty = $elm$core$Dict$empty;
-var $elm$core$Set$insert = F2(
-	function (key, _v0) {
-		var dict = _v0;
-		return A3($elm$core$Dict$insert, key, 0, dict);
-	});
-var $elm$core$Set$fromList = function (list) {
-	return A3($elm$core$List$foldl, $elm$core$Set$insert, $elm$core$Set$empty, list);
-};
 var $elm$core$List$isEmpty = function (xs) {
 	if (!xs.b) {
 		return true;
@@ -7715,9 +7705,7 @@ var $author$project$Main$processSchedule = F2(
 						},
 						day.ay));
 			});
-		var sessionIds = $elm$core$Set$toList(
-			$elm$core$Set$fromList(
-				A3($elm$core$List$foldl, cb, _List_Nil, filtered)));
+		var sessionIds = A3($elm$core$List$foldl, cb, _List_Nil, filtered);
 		return _Utils_Tuple2(
 			_Utils_update(
 				model,
@@ -7725,7 +7713,10 @@ var $author$project$Main$processSchedule = F2(
 					a0: $author$project$Types$Success(filtered)
 				}),
 			$elm$core$Platform$Cmd$batch(
-				A2($elm$core$List$map, $author$project$Main$fetchSessionDetail, sessionIds)));
+				A2(
+					$elm$core$List$map,
+					$author$project$Main$fetchSessionDetail,
+					$elm$core$List$reverse(sessionIds))));
 	});
 var $author$project$Main$update = F2(
 	function (msg, model) {
@@ -7976,6 +7967,8 @@ var $elm$html$Html$Attributes$stringProperty = F2(
 	});
 var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
 var $elm$html$Html$div = _VirtualDom_node('div');
+var $elm$core$Set$Set_elm_builtin = $elm$core$Basics$identity;
+var $elm$core$Set$empty = $elm$core$Dict$empty;
 var $mdgriffith$elm_ui$Internal$Model$lengthClassName = function (x) {
 	switch (x.$) {
 		case 0:
@@ -8129,6 +8122,11 @@ var $mdgriffith$elm_ui$Internal$Model$getStyleName = function (style) {
 				$mdgriffith$elm_ui$Internal$Model$transformClass(x));
 	}
 };
+var $elm$core$Set$insert = F2(
+	function (key, _v0) {
+		var dict = _v0;
+		return A3($elm$core$Dict$insert, key, 0, dict);
+	});
 var $elm$core$Dict$member = F2(
 	function (key, dict) {
 		var _v0 = A2($elm$core$Dict$get, key, dict);

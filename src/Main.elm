@@ -126,11 +126,9 @@ processSchedule schedule model =
 
         sessionIds =
             List.foldl cb [] filtered
-                |> Set.fromList
-                |> Set.toList
     in
     ( { model | schedule = Success filtered }
-    , sessionIds |> List.map fetchSessionDetail |> Cmd.batch
+    , sessionIds |> List.reverse |> List.map fetchSessionDetail |> Cmd.batch
     )
 
 
