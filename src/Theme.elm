@@ -39,6 +39,6 @@ light =
     , fg = rgb255 20 20 20
     , red = rgb255 210 45 45
     , yellow = rgb255 230 126 0
-    , light = rgb255 110 110 110
+    , light = rgb255 150 150 150
     , accent = rgb255 40 100 220
     }

@@ -7197,7 +7197,7 @@ var $author$project$Theme$light = {
 	aB: A3($mdgriffith$elm_ui$Element$rgb255, 40, 100, 220),
 	aG: A3($mdgriffith$elm_ui$Element$rgb255, 255, 255, 255),
 	aL: A3($mdgriffith$elm_ui$Element$rgb255, 20, 20, 20),
-	aS: A3($mdgriffith$elm_ui$Element$rgb255, 110, 110, 110),
+	aS: A3($mdgriffith$elm_ui$Element$rgb255, 150, 150, 150),
 	a$: A3($mdgriffith$elm_ui$Element$rgb255, 210, 45, 45),
 	bc: A3($mdgriffith$elm_ui$Element$rgb255, 230, 126, 0)
 };
