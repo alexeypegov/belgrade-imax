@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Beograd IMAX raspored</title>
+  <script type="text/javascript" src="elm.min.js"></script>
+  <style type="text/css">
+    html,
+    body,
+    main {
+      padding: 0;
+      margin: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <main></main>
+  <script type="text/javascript">
+    const mq = window.matchMedia('(prefers-color-scheme: dark)');
+
+    var app = Elm.Main.init({
+      node: document.querySelector('main'),
+      flags: {
+        darkMode: mq.matches,
+        width: window.innerWidth
+      }
+    });
+
+    const handler = (e) => {
+      app.ports.themeChanged.send(e.matches);
+    };
+
+    app.ports.logError.subscribe(msg => console.log(msg));
+
+    if (mq.addEventListener) {
+      mq.addEventListener("change", handler);
+    } else if (mq.addListener) {
+      mq.addListener(handler);
+    }
+  </script>
+</body>
+
+</html>
