@@ -7,7 +7,6 @@ import Dict
 import Element exposing (..)
 import Http exposing (Error(..))
 import Ports exposing (logError, themeChanged)
-import Set
 import Theme exposing (forMode)
 import Types exposing (DaySchedule, Model, ScheduleState(..), Session, SessionDetailsState(..), SessionDetailsWrapper)
 import Ui exposing (view)

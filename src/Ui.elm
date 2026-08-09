@@ -7,7 +7,6 @@ import Element.Border as Border
 import Element.Font as Font
 import Html exposing (Html, details)
 import Html.Attributes
-import Json.Decode exposing (decodeValue)
 import Theme exposing (Theme)
 import Time exposing (Posix)
 import TimeFormat exposing (formatDate, formatTime, formatWeekday)
@@ -34,6 +33,22 @@ dayTitleBlock theme date =
         ]
         [ el [ width fill ] (text (formatWeekday date))
         , el [ alignRight ] (text (formatDate date))
+        ]
+
+
+sourceBlock : Theme -> Element msg
+sourceBlock theme =
+    row [ width fill, centerX, paddingXY 0 64 ]
+        [ link
+            [ htmlAttribute (Html.Attributes.target "_blank")
+            , htmlAttribute (Html.Attributes.rel "noopener")
+            , Font.color theme.accent
+            , Font.underline
+            , centerX
+            ]
+            { url = "https://github.com/alexeypegov/belgrade-imax"
+            , label = text "Izvorni kod"
+            }
         ]
 
 
@@ -209,4 +224,5 @@ view { context, schedule, sessionDetails } =
         column [ width (fill |> maximum 800), centerX, padding 16 ]
             [ title
             , content context schedule sessionDetails
+            , sourceBlock context.theme
             ]
