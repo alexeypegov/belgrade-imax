@@ -38,7 +38,7 @@ dayTitleBlock theme date =
 
 sourceBlock : Theme -> Element msg
 sourceBlock theme =
-    row [ width fill, centerX, paddingXY 0 64 ]
+    row [ width fill, centerX, paddingEach { top = 64, bottom = 16, left = 0, right = 0 } ]
         [ link
             [ htmlAttribute (Html.Attributes.target "_blank")
             , htmlAttribute (Html.Attributes.rel "noopener")
