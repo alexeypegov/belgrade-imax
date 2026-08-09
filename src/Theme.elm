@@ -8,6 +8,7 @@ type alias Theme =
     , fg : Color
     , red : Color
     , yellow : Color
+    , green : Color
     , light : Color
     , accent : Color
     }
@@ -28,6 +29,7 @@ dark =
     , fg = rgb255 230 230 230
     , red = rgb255 210 45 45
     , yellow = rgb255 230 126 0
+    , green = rgb255 30 200 30
     , light = rgb255 150 150 150
     , accent = rgb255 90 150 255
     }
@@ -39,6 +41,7 @@ light =
     , fg = rgb255 20 20 20
     , red = rgb255 210 45 45
     , yellow = rgb255 230 126 0
+    , green = rgb255 100 180 100
     , light = rgb255 150 150 150
     , accent = rgb255 40 100 220
     }

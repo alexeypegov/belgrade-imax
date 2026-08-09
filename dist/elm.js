@@ -7189,6 +7189,7 @@ var $author$project$Theme$dark = {
 	aB: A3($mdgriffith$elm_ui$Element$rgb255, 90, 150, 255),
 	aG: A3($mdgriffith$elm_ui$Element$rgb255, 18, 18, 18),
 	aL: A3($mdgriffith$elm_ui$Element$rgb255, 230, 230, 230),
+	aM: A3($mdgriffith$elm_ui$Element$rgb255, 30, 200, 30),
 	aS: A3($mdgriffith$elm_ui$Element$rgb255, 150, 150, 150),
 	a$: A3($mdgriffith$elm_ui$Element$rgb255, 210, 45, 45),
 	bc: A3($mdgriffith$elm_ui$Element$rgb255, 230, 126, 0)
@@ -7197,6 +7198,7 @@ var $author$project$Theme$light = {
 	aB: A3($mdgriffith$elm_ui$Element$rgb255, 40, 100, 220),
 	aG: A3($mdgriffith$elm_ui$Element$rgb255, 255, 255, 255),
 	aL: A3($mdgriffith$elm_ui$Element$rgb255, 20, 20, 20),
+	aM: A3($mdgriffith$elm_ui$Element$rgb255, 100, 180, 100),
 	aS: A3($mdgriffith$elm_ui$Element$rgb255, 150, 150, 150),
 	a$: A3($mdgriffith$elm_ui$Element$rgb255, 210, 45, 45),
 	bc: A3($mdgriffith$elm_ui$Element$rgb255, 230, 126, 0)
@@ -14438,8 +14440,6 @@ var $author$project$Ui$dayTitleBlock = F2(
 						$author$project$TimeFormat$formatDate(date)))
 				]));
 	});
-var $mdgriffith$elm_ui$Internal$Model$Empty = {$: 3};
-var $mdgriffith$elm_ui$Element$none = $mdgriffith$elm_ui$Internal$Model$Empty;
 var $elm$core$String$cons = _String_cons;
 var $elm$core$String$fromChar = function (_char) {
 	return A2($elm$core$String$cons, _char, '');
@@ -14466,22 +14466,25 @@ var $elm$core$String$padLeft = F3(
 				$elm$core$String$fromChar(_char)),
 			string);
 	});
-var $author$project$Ui$seatsBlock = F3(
+var $author$project$Ui$availableBlock = F3(
 	function (theme, shouldPad, details) {
-		var seatsAvailable = shouldPad ? A3(
+		var availPercent = ((details.dQ * 100) / details.dR) | 0;
+		var color = (availPercent > 70) ? theme.aM : ((availPercent > 30) ? theme.bc : theme.a$);
+		var availPadded = shouldPad ? A3(
 			$elm$core$String$padLeft,
-			3,
+			2,
 			' ',
-			$elm$core$String$fromInt(details.dQ)) : $elm$core$String$fromInt(details.dQ);
+			$elm$core$String$fromInt(availPercent)) : $elm$core$String$fromInt(availPercent);
 		return A2(
 			$mdgriffith$elm_ui$Element$el,
 			_List_fromArray(
 				[
-					$mdgriffith$elm_ui$Element$Font$color(theme.aS)
+					$mdgriffith$elm_ui$Element$Font$color(color)
 				]),
-			$mdgriffith$elm_ui$Element$text(
-				seatsAvailable + ('/' + $elm$core$String$fromInt(details.dR))));
+			$mdgriffith$elm_ui$Element$text(availPadded + '%'));
 	});
+var $mdgriffith$elm_ui$Internal$Model$Empty = {$: 3};
+var $mdgriffith$elm_ui$Element$none = $mdgriffith$elm_ui$Internal$Model$Empty;
 var $mdgriffith$elm_ui$Element$htmlAttribute = $mdgriffith$elm_ui$Internal$Model$Attr;
 var $elm$html$Html$Attributes$href = function (url) {
 	return A2(
@@ -14554,7 +14557,7 @@ var $author$project$Ui$detailCell = F3(
 						]),
 					_List_fromArray(
 						[
-							A3($author$project$Ui$seatsBlock, theme, shouldPad, details.dT),
+							A3($author$project$Ui$availableBlock, theme, shouldPad, details.dT),
 							A2($author$project$Ui$ticketLinkBlock, theme, details.dT)
 						]));
 			} else {

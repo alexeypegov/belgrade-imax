@@ -67,23 +67,31 @@ titleCell theme value =
             el [ Font.color theme.light ] (text "• • •")
 
 
-seatsBlock : Theme -> Bool -> SessionDetails -> Element msg
-seatsBlock theme shouldPad details =
+availableBlock : Theme -> Bool -> SessionDetails -> Element msg
+availableBlock theme shouldPad details =
     let
-        seatsAvailable =
+        availPercent =
+            (details.seatsAvailable * 100) // details.seatsTotal
+
+        availPadded =
             if shouldPad then
-                String.padLeft 3 ' ' (String.fromInt details.seatsAvailable)
+                String.padLeft 2 ' ' (String.fromInt availPercent)
 
             else
-                String.fromInt details.seatsAvailable
+                String.fromInt availPercent
+
+        color =
+            if availPercent > 70 then
+                theme.green
+
+            else if availPercent > 30 then
+                theme.yellow
+
+            else
+                theme.red
     in
-    el [ Font.color theme.light ]
-        (text
-            (seatsAvailable
-                ++ "/"
-                ++ String.fromInt details.seatsTotal
-            )
-        )
+    el [ Font.color color ]
+        (text (availPadded ++ "%"))
 
 
 ticketLinkBlock : Theme -> SessionDetails -> Element msg
@@ -106,7 +114,7 @@ detailCell theme shouldPad value =
             case state of
                 SessionDetailsSuccess details ->
                     row [ spacing 8 ]
-                        [ seatsBlock theme shouldPad details.session
+                        [ availableBlock theme shouldPad details.session
                         , ticketLinkBlock theme details.session
                         ]
 
