@@ -1,9 +1,9 @@
 module Decoders exposing (filmDecoder, scheduleDecoder, sessionDetailsDecoder, sessionDetailsWrapperDecoder)
 
 import Iso8601
-import Json.Decode as Decode exposing (Decoder, field, int, list, map, map2, map6, string)
+import Json.Decode exposing (Decoder, field, int, list, map, map2, map5, string)
 import List exposing (concat)
-import Types exposing (DaySchedule, Film, Session, SessionDetails, SessionDetailsWrapper, SessionStatus(..))
+import Types exposing (DaySchedule, Film, Session, SessionDetails, SessionDetailsWrapper)
 
 
 techDecoder : Decoder (List String)
@@ -45,32 +45,11 @@ sessionDetailsWrapperDecoder =
         (field "scheduledFilm" filmDecoder)
 
 
-statusDecoder : Decoder SessionStatus
-statusDecoder =
-    Decode.string
-        |> Decode.andThen
-            (\s ->
-                case s of
-                    "green" ->
-                        Decode.succeed StatusGreen
-
-                    "yellow" ->
-                        Decode.succeed StatusYellow
-
-                    "red" ->
-                        Decode.succeed StatusRed
-
-                    unknown ->
-                        Decode.succeed (StatusUnknown unknown)
-            )
-
-
 sessionDetailsDecoder : Decoder SessionDetails
 sessionDetailsDecoder =
-    map6 SessionDetails
+    map5 SessionDetails
         (field "id" string)
         (field "sessionId" string)
         (field "showtime" Iso8601.decoder)
-        (field "status" statusDecoder)
         (field "seatsAvailable" int)
         (field "seatsTotal" int)

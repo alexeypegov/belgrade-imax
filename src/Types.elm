@@ -1,4 +1,4 @@
-module Types exposing (Context, DaySchedule, Film, Model, ScheduleState(..), Session, SessionDetails, SessionDetailsState(..), SessionDetailsWrapper, SessionStatus(..))
+module Types exposing (Context, DaySchedule, Film, Model, ScheduleState(..), Session, SessionDetails, SessionDetailsState(..), SessionDetailsWrapper)
 
 import Dict exposing (Dict)
 import Theme exposing (Theme)
@@ -17,18 +17,10 @@ type alias SessionDetailsWrapper =
     }
 
 
-type SessionStatus
-    = StatusGreen
-    | StatusYellow
-    | StatusRed
-    | StatusUnknown String
-
-
 type alias SessionDetails =
     { id : String
     , sessionId : String
     , showtime : Posix
-    , status : SessionStatus
     , seatsAvailable : Int
     , seatsTotal : Int
     }

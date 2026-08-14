@@ -10,7 +10,7 @@ import Html.Attributes
 import Theme exposing (Theme)
 import Time exposing (Posix)
 import TimeFormat exposing (formatDate, formatTime, formatWeekday)
-import Types exposing (Context, DaySchedule, Model, ScheduleState(..), SessionDetails, SessionDetailsState(..), SessionStatus(..))
+import Types exposing (Context, DaySchedule, Model, ScheduleState(..), SessionDetails, SessionDetailsState(..))
 
 
 title : Element msg
