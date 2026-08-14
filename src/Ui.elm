@@ -43,6 +43,7 @@ sourceBlock theme =
             [ htmlAttribute (Html.Attributes.target "_blank")
             , htmlAttribute (Html.Attributes.rel "noopener")
             , Font.color theme.accent
+            , Font.size 16
             , Font.underline
             , centerX
             ]
@@ -190,13 +191,19 @@ dayBlock { theme, screenWidth } sessionDetails schedule =
 
 scheduleBlock : Context -> Dict String SessionDetailsState -> List DaySchedule -> Element msg
 scheduleBlock context sessionDetails days =
-    column
-        [ width fill
-        , centerX
-        , paddingXY 0 16
-        , spacing 32
-        ]
-        (List.map (dayBlock context sessionDetails) days)
+    if List.isEmpty days then
+        el [ centerX, paddingXY 0 32 ] <|
+            paragraph [ Font.size 24 ]
+                [ text "Za sada nema IMAX projekcija u rasporedu bioskopa :(" ]
+
+    else
+        column
+            [ width fill
+            , centerX
+            , paddingXY 0 16
+            , spacing 32
+            ]
+            (List.map (dayBlock context sessionDetails) days)
 
 
 content : Context -> ScheduleState -> Dict String SessionDetailsState -> Element msg

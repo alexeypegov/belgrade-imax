@@ -15040,7 +15040,23 @@ var $author$project$Ui$dayBlock = F3(
 	});
 var $author$project$Ui$scheduleBlock = F3(
 	function (context, sessionDetails, days) {
-		return A2(
+		return $elm$core$List$isEmpty(days) ? A2(
+			$mdgriffith$elm_ui$Element$el,
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$centerX,
+					A2($mdgriffith$elm_ui$Element$paddingXY, 0, 32)
+				]),
+			A2(
+				$mdgriffith$elm_ui$Element$paragraph,
+				_List_fromArray(
+					[
+						$mdgriffith$elm_ui$Element$Font$size(24)
+					]),
+				_List_fromArray(
+					[
+						$mdgriffith$elm_ui$Element$text('Za sada nema IMAX projekcija u rasporedu bioskopa :(')
+					]))) : A2(
 			$mdgriffith$elm_ui$Element$column,
 			_List_fromArray(
 				[
@@ -15394,6 +15410,7 @@ var $author$project$Ui$sourceBlock = function (theme) {
 						$mdgriffith$elm_ui$Element$htmlAttribute(
 						$elm$html$Html$Attributes$rel('noopener')),
 						$mdgriffith$elm_ui$Element$Font$color(theme.accent),
+						$mdgriffith$elm_ui$Element$Font$size(16),
 						$mdgriffith$elm_ui$Element$Font$underline,
 						$mdgriffith$elm_ui$Element$centerX
 					]),
