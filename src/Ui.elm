@@ -9,7 +9,7 @@ import Html exposing (Html, details)
 import Html.Attributes
 import Theme exposing (Theme)
 import Time exposing (Posix)
-import TimeFormat exposing (formatDate, formatTime, formatWeekday)
+import TimeFormat exposing (formatDate, formatTime, formatWeekday, isWeekend)
 import Types exposing (Context, DaySchedule, Model, ScheduleState(..), SessionDetails, SessionDetailsState(..))
 
 
@@ -22,14 +22,22 @@ title =
 
 dayTitleBlock : Theme -> Posix -> Element msg
 dayTitleBlock theme date =
+    let
+        bgColor =
+            if isWeekend date then
+                theme.weekendBg
+
+            else
+                theme.bg
+    in
     row
         [ width fill
         , spacing 4
         , Font.size 20
-        , Font.bold
-        , paddingEach { top = 32, bottom = 8, left = 0, right = 0 }
+        , Background.color bgColor
+        , paddingXY 16 8
         , Border.widthEach { bottom = 2, top = 0, left = 0, right = 0 }
-        , Border.color theme.light
+        , Border.color theme.separator
         ]
         [ el [ width fill ] (text (formatWeekday date))
         , el [ alignRight ] (text (formatDate date))
@@ -59,7 +67,12 @@ timeCell theme value =
         Just state ->
             case state of
                 SessionDetailsSuccess details ->
-                    el [ Font.color theme.light, alignTop ] (text (formatTime details.session.showtime))
+                    el
+                        [ Font.color theme.light
+                        , alignTop
+                        , paddingEach { left = 16, right = 0, top = 0, bottom = 0 }
+                        ]
+                        (text (formatTime details.session.showtime))
 
                 SessionDetailsFailure ->
                     Element.none
@@ -83,18 +96,12 @@ titleCell theme value =
             el [ Font.color theme.light ] (text "• • •")
 
 
-availableBlock : Theme -> Bool -> SessionDetails -> Element msg
-availableBlock theme shouldPad details =
+availableBlock : Theme -> SessionDetails -> Element msg
+availableBlock theme details =
     let
         availPercent =
-            (details.seatsAvailable * 100) // details.seatsTotal
-
-        availPadded =
-            if shouldPad then
-                String.padLeft 2 ' ' (String.fromInt availPercent)
-
-            else
-                String.fromInt availPercent
+            (details.seatsAvailable * 100)
+                // details.seatsTotal
 
         color =
             if availPercent > 70 then
@@ -107,7 +114,7 @@ availableBlock theme shouldPad details =
                 theme.red
     in
     el [ Font.color color ]
-        (text (availPadded ++ "%"))
+        (text (String.fromInt availPercent ++ "%"))
 
 
 ticketLinkBlock : Theme -> SessionDetails -> Element msg
@@ -124,13 +131,25 @@ ticketLinkBlock theme details =
 
 
 detailCell : Theme -> Bool -> Maybe SessionDetailsState -> Element msg
-detailCell theme shouldPad value =
+detailCell theme smallScreen value =
+    let
+        alignment =
+            if smallScreen then
+                alignLeft
+
+            else
+                alignRight
+    in
     case value of
         Just state ->
             case state of
                 SessionDetailsSuccess details ->
-                    row [ spacing 8 ]
-                        [ availableBlock theme shouldPad details.session
+                    row
+                        [ spacing 8
+                        , alignment
+                        , paddingEach { left = 0, right = 16, top = 0, bottom = 0 }
+                        ]
+                        [ availableBlock theme details.session
                         , ticketLinkBlock theme details.session
                         ]
 
@@ -147,7 +166,7 @@ narrowBlock theme value =
         [ el [ alignTop ] (timeCell theme value)
         , column [ width fill, spacing 8 ]
             [ titleCell theme value
-            , detailCell theme False value
+            , detailCell theme True value
             ]
         ]
 
@@ -167,7 +186,7 @@ dayBlock { theme, screenWidth } sessionDetails schedule =
             )
 
     else
-        column [ width fill, spacing 8 ]
+        column [ width fill, spacing 8, paddingXY 0 16 ]
             [ dayTitleBlock theme schedule.date
             , table [ width fill, spacing 8 ]
                 { data = enriched
@@ -182,7 +201,7 @@ dayBlock { theme, screenWidth } sessionDetails schedule =
                       }
                     , { header = none
                       , width = shrink
-                      , view = \s -> detailCell theme True (Tuple.second s)
+                      , view = \s -> el [] (detailCell theme False (Tuple.second s))
                       }
                     ]
                 }
@@ -227,9 +246,17 @@ content context scheduleState sessionDetails =
 
 view : Model -> Html msg
 view { context, schedule, sessionDetails } =
+    let
+        horizontalPadding =
+            if context.screenWidth < 460 then
+                0
+
+            else
+                16
+    in
     layout [ width fill, Background.color context.theme.bg, Font.color context.theme.fg, Font.family [ Font.monospace ] ] <|
-        column [ width (fill |> maximum 800), centerX, padding 16 ]
-            [ title
-            , content context schedule sessionDetails
+        column [ width (fill |> maximum 800), centerX, paddingXY 0 16 ]
+            [ el [ paddingXY 16 0 ] title
+            , el [ paddingXY horizontalPadding 0 ] (content context schedule sessionDetails)
             , sourceBlock context.theme
             ]

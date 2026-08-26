@@ -10,6 +10,8 @@ type alias Theme =
     , yellow : Color
     , green : Color
     , light : Color
+    , separator : Color
+    , weekendBg : Color
     , accent : Color
     }
 
@@ -31,6 +33,8 @@ dark =
     , yellow = rgb255 230 126 0
     , green = rgb255 30 200 30
     , light = rgb255 150 150 150
+    , separator = rgb255 60 60 60
+    , weekendBg = rgb255 40 40 40
     , accent = rgb255 90 150 255
     }
 
@@ -43,5 +47,7 @@ light =
     , yellow = rgb255 230 126 0
     , green = rgb255 100 180 100
     , light = rgb255 150 150 150
+    , separator = rgb255 240 240 240
+    , weekendBg = rgb255 250 250 250
     , accent = rgb255 40 100 220
     }

@@ -1,7 +1,8 @@
-module TimeFormat exposing (belgrade, formatDate, formatTime, formatWeekday)
+module TimeFormat exposing (belgrade, formatDate, formatTime, formatWeekday, isWeekend)
 
-import Date exposing (Date, Unit(..))
+import Date exposing (Date, weekday)
 import Time exposing (Month(..), Posix, Weekday(..), Zone)
+import Time.Extra exposing (Interval(..))
 import TimeZone
 
 
@@ -35,6 +36,19 @@ formatDate posix =
 formatWeekday : Posix -> String
 formatWeekday posix =
     weekDay (Date.fromPosix belgrade posix)
+
+
+isWeekend : Posix -> Bool
+isWeekend posix =
+    case weekday (Date.fromPosix belgrade posix) of
+        Sat ->
+            True
+
+        Sun ->
+            True
+
+        _ ->
+            False
 
 
 monthName : Date -> String
