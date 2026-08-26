@@ -253,10 +253,17 @@ view { context, schedule, sessionDetails } =
 
             else
                 16
+
+        titleHorizontalPadding =
+            if context.screenWidth < 460 then
+                16
+
+            else
+                32
     in
     layout [ width fill, Background.color context.theme.bg, Font.color context.theme.fg, Font.family [ Font.monospace ] ] <|
         column [ width (fill |> maximum 800), centerX, paddingXY 0 16 ]
-            [ el [ paddingXY 16 0 ] title
-            , el [ paddingXY horizontalPadding 0 ] (content context schedule sessionDetails)
+            [ el [ width fill, paddingXY titleHorizontalPadding 0 ] title
+            , el [ width fill, paddingXY horizontalPadding 0 ] (content context schedule sessionDetails)
             , sourceBlock context.theme
             ]

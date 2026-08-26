@@ -15422,6 +15422,7 @@ var $author$project$Ui$view = function (_v0) {
 	var sessionDetails = _v0.ah;
 	var schedule = _v0.a4;
 	var context = _v0.av;
+	var titleHorizontalPadding = (context.cb < 460) ? 16 : 32;
 	var horizontalPadding = (context.cb < 460) ? 0 : 16;
 	return A2(
 		$mdgriffith$elm_ui$Element$layout,
@@ -15449,13 +15450,15 @@ var $author$project$Ui$view = function (_v0) {
 					$mdgriffith$elm_ui$Element$el,
 					_List_fromArray(
 						[
-							A2($mdgriffith$elm_ui$Element$paddingXY, 16, 0)
+							$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+							A2($mdgriffith$elm_ui$Element$paddingXY, titleHorizontalPadding, 0)
 						]),
 					$author$project$Ui$title),
 					A2(
 					$mdgriffith$elm_ui$Element$el,
 					_List_fromArray(
 						[
+							$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
 							A2($mdgriffith$elm_ui$Element$paddingXY, horizontalPadding, 0)
 						]),
 					A3($author$project$Ui$content, context, schedule, sessionDetails)),
