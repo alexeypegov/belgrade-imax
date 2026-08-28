@@ -13,6 +13,11 @@ import TimeFormat exposing (formatDate, formatTime, formatWeekday, isWeekend)
 import Types exposing (Context, DaySchedule, Model, ScheduleState(..), SessionDetails, SessionDetailsState(..))
 
 
+smallScreenWidth : Int
+smallScreenWidth =
+    460
+
+
 title : Element msg
 title =
     el [ centerX, paddingXY 0 32 ] <|
@@ -28,7 +33,7 @@ dayTitleBlock theme date =
                 theme.weekendBg
 
             else
-                theme.bg
+                theme.weekdayBg
     in
     row
         [ width fill
@@ -36,8 +41,6 @@ dayTitleBlock theme date =
         , Font.size 20
         , Background.color bgColor
         , paddingXY 16 8
-        , Border.widthEach { bottom = 2, top = 0, left = 0, right = 0 }
-        , Border.color theme.separator
         ]
         [ el [ width fill ] (text (formatWeekday date))
         , el [ alignRight ] (text (formatDate date))
@@ -177,7 +180,7 @@ dayBlock { theme, screenWidth } sessionDetails schedule =
         enriched =
             List.map (\s -> ( s, Dict.get s.id sessionDetails )) schedule.sessions
     in
-    if screenWidth < 460 then
+    if screenWidth < smallScreenWidth then
         column [ width fill, paddingXY 0 16 ]
             (dayTitleBlock theme schedule.date
                 :: List.map
@@ -247,23 +250,16 @@ content context scheduleState sessionDetails =
 view : Model -> Html msg
 view { context, schedule, sessionDetails } =
     let
-        horizontalPadding =
-            if context.screenWidth < 460 then
-                0
+        padding =
+            if context.screenWidth < smallScreenWidth then
+                ( 16, 0 )
 
             else
-                16
-
-        titleHorizontalPadding =
-            if context.screenWidth < 460 then
-                16
-
-            else
-                32
+                ( 32, 16 )
     in
     layout [ width fill, Background.color context.theme.bg, Font.color context.theme.fg, Font.family [ Font.monospace ] ] <|
         column [ width (fill |> maximum 800), centerX, paddingXY 0 16 ]
-            [ el [ width fill, paddingXY titleHorizontalPadding 0 ] title
-            , el [ width fill, paddingXY horizontalPadding 0 ] (content context schedule sessionDetails)
+            [ el [ width fill, paddingXY (Tuple.first padding) 0 ] title
+            , el [ width fill, paddingXY (Tuple.second padding) 0 ] (content context schedule sessionDetails)
             , sourceBlock context.theme
             ]
