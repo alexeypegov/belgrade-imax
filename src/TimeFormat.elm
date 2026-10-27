@@ -1,8 +1,7 @@
-module TimeFormat exposing (belgrade, formatDate, formatTime, formatWeekday, isWeekend)
+module TimeFormat exposing (belgrade, formatDate, formatTime, formatWeekday, isConsecutiveDays, isWeekend, toDate)
 
-import Date exposing (Date, weekday)
+import Date exposing (Date, Unit(..), weekday)
 import Time exposing (Month(..), Posix, Weekday(..), Zone)
-import Time.Extra exposing (Interval(..))
 import TimeZone
 
 
@@ -20,6 +19,23 @@ formatTime posix =
     pad (Time.toHour belgrade posix)
         ++ ":"
         ++ pad (Time.toMinute belgrade posix)
+
+
+toDate : Posix -> Zone -> Date
+toDate posix tz =
+    Date.fromPosix tz posix
+
+
+isConsecutiveDays : Posix -> Posix -> Bool
+isConsecutiveDays prev curr =
+    let
+        pDate =
+            toDate prev belgrade
+
+        cDate =
+            toDate curr belgrade
+    in
+    Date.diff Days pDate cDate == 1
 
 
 formatDate : Posix -> String

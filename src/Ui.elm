@@ -3,13 +3,12 @@ module Ui exposing (..)
 import Dict exposing (Dict)
 import Element exposing (..)
 import Element.Background as Background
-import Element.Border as Border
 import Element.Font as Font
 import Html exposing (Html, details)
 import Html.Attributes
 import Theme exposing (Theme)
 import Time exposing (Posix)
-import TimeFormat exposing (formatDate, formatTime, formatWeekday, isWeekend)
+import TimeFormat exposing (formatDate, formatTime, formatWeekday, isConsecutiveDays, isWeekend)
 import Types exposing (Context, DaySchedule, Model, ScheduleState(..), SessionDetails, SessionDetailsState(..))
 
 
@@ -211,6 +210,49 @@ dayBlock { theme, screenWidth } sessionDetails schedule =
             ]
 
 
+gapSeparator : Theme -> Element msg
+gapSeparator theme =
+    let
+        line =
+            el
+                [ width fill
+                , height (px 2)
+                , Background.color theme.separator
+                ]
+                none
+    in
+    row
+        [ width fill
+        , spacing 16
+        , paddingXY 16 0
+        , Font.color theme.separator
+        , Font.size 28
+        ]
+        [ line
+        , el [ Font.letterSpacing 8 ] (text "···")
+        , line
+        ]
+
+
+withGaps : Context -> Dict String SessionDetailsState -> List DaySchedule -> List (Element msg)
+withGaps context sessionDetails days =
+    let
+        render prev day =
+            case prev of
+                Just p ->
+                    if not (isConsecutiveDays p.date day.date) then
+                        [ gapSeparator context.theme, dayBlock context sessionDetails day ]
+
+                    else
+                        [ dayBlock context sessionDetails day ]
+
+                Nothing ->
+                    [ dayBlock context sessionDetails day ]
+    in
+    List.map2 render (Nothing :: List.map Just days) days
+        |> List.concat
+
+
 scheduleBlock : Context -> Dict String SessionDetailsState -> List DaySchedule -> Element msg
 scheduleBlock context sessionDetails days =
     if List.isEmpty days then
@@ -225,7 +267,7 @@ scheduleBlock context sessionDetails days =
             , paddingXY 0 16
             , spacing 32
             ]
-            (List.map (dayBlock context sessionDetails) days)
+            (withGaps context sessionDetails days)
 
 
 content : Context -> ScheduleState -> Dict String SessionDetailsState -> Element msg
