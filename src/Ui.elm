@@ -217,7 +217,7 @@ gapSeparator theme =
             el
                 [ width fill
                 , height (px 2)
-                , Background.color theme.separator
+                , Background.color theme.light
                 ]
                 none
     in
@@ -225,7 +225,7 @@ gapSeparator theme =
         [ width fill
         , spacing 16
         , paddingXY 16 0
-        , Font.color theme.separator
+        , Font.color theme.light
         , Font.size 28
         ]
         [ line
