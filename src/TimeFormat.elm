@@ -1,4 +1,4 @@
-module TimeFormat exposing (belgrade, formatDate, formatTime, formatWeekday, isConsecutiveDays, isWeekend, toDate)
+module TimeFormat exposing (belgrade, formatDate, formatTime, formatWeekday, gapInDays, isWeekend, toDate)
 
 import Date exposing (Date, Unit(..), weekday)
 import Time exposing (Month(..), Posix, Weekday(..), Zone)
@@ -26,8 +26,8 @@ toDate posix tz =
     Date.fromPosix tz posix
 
 
-isConsecutiveDays : Posix -> Posix -> Bool
-isConsecutiveDays prev curr =
+gapInDays : Posix -> Posix -> Int
+gapInDays prev curr =
     let
         pDate =
             toDate prev belgrade
@@ -35,7 +35,7 @@ isConsecutiveDays prev curr =
         cDate =
             toDate curr belgrade
     in
-    Date.diff Days pDate cDate == 1
+    Date.diff Days pDate cDate
 
 
 formatDate : Posix -> String

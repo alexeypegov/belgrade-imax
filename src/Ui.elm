@@ -8,7 +8,7 @@ import Html exposing (Html, details)
 import Html.Attributes
 import Theme exposing (Theme)
 import Time exposing (Posix)
-import TimeFormat exposing (formatDate, formatTime, formatWeekday, isConsecutiveDays, isWeekend)
+import TimeFormat exposing (formatDate, formatTime, formatWeekday, gapInDays, isWeekend)
 import Types exposing (Context, DaySchedule, Model, ScheduleState(..), SessionDetails, SessionDetailsState(..))
 
 
@@ -210,26 +210,35 @@ dayBlock { theme, screenWidth } sessionDetails schedule =
             ]
 
 
-gapSeparator : Theme -> Element msg
-gapSeparator theme =
+gapSeparator : Int -> Theme -> Element msg
+gapSeparator days theme =
     let
         line =
             el
                 [ width fill
                 , height (px 2)
-                , Background.color theme.light
+                , Background.color theme.separator
                 ]
                 none
+
+        noProjectionDays =
+            days - 1
+
+        label =
+            if modBy 10 noProjectionDays == 1 && modBy 100 noProjectionDays /= 11 then
+                String.fromInt noProjectionDays ++ " dan"
+
+            else
+                String.fromInt noProjectionDays ++ " dana"
     in
     row
         [ width fill
         , spacing 16
         , paddingXY 16 0
         , Font.color theme.light
-        , Font.size 28
         ]
         [ line
-        , el [ Font.letterSpacing 8 ] (text "···")
+        , el [] (text label)
         , line
         ]
 
@@ -240,11 +249,15 @@ withGaps context sessionDetails days =
         render prev day =
             case prev of
                 Just p ->
-                    if not (isConsecutiveDays p.date day.date) then
-                        [ gapSeparator context.theme, dayBlock context sessionDetails day ]
+                    let
+                        gapDays =
+                            gapInDays p.date day.date
+                    in
+                    if gapDays <= 1 then
+                        [ dayBlock context sessionDetails day ]
 
                     else
-                        [ dayBlock context sessionDetails day ]
+                        [ gapSeparator gapDays context.theme, dayBlock context sessionDetails day ]
 
                 Nothing ->
                     [ dayBlock context sessionDetails day ]
