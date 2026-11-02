@@ -1,3 +1,1 @@
-Belgrade IMAX cinema schedule.
-
-Deployed at https://imax.alexeypegov.com
+Belgrade IMAX cinema schedule written in Elm.
