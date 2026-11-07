@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <rect width="1024" height="1024" fill="#141414"/>
+  <g fill="#f2f2f2" font-family="monospace" font-weight="bold" font-size="300" text-anchor="middle">
+    <text x="512" y="382">imax</text>
+    <text x="512" y="769">bg</text>
+  </g>
+</svg>
